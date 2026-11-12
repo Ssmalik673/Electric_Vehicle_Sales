@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #101c32, #172b45, #123b48);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .orb1 {
+            width: 250px;
+            height: 250px;
+            background: #16c6b5;
+            top: -80px;
+            left: -70px;
+        }
+
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            background: #3185ce;
+            bottom: -120px;
+            right: -80px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 520px;
+            background: #ffffff;
+            color: #1d2d42;
+            padding: 48px 35px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .bolt {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: #e4f8f5;
+            color: #119f9a;
+            font-size: 32px;
+            margin-bottom: 22px;
+        }
+
+        h2 {
+            font-size: 23px;
+            line-height: 1.5;
+            color: #34495e;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .value {
+            display: block;
+            font-size: 52px;
+            font-weight: 750;
+            color: #119f9a;
+            margin-top: 12px;
+            letter-spacing: 1px;
+        }
+
+        .unit {
+            display: block;
+            font-size: 14px;
+            color: #7b8997;
+            margin-top: 5px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 25px;
+            background: linear-gradient(100deg, #119f9a, #167fba);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        .back:hover {
+            background: linear-gradient(100deg, #0d8985, #126b9e);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(17, 159, 154, 0.25);
+        }
+
+        .arrow {
+            margin-right: 6px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .card {
+                padding: 35px 22px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .value {
+                font-size: 43px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+
+    <div class="card">
+
+        <span class="bolt">⚡</span>
+
+        <h2>
+            Your Predicted Monthly Sales
+            <span class="value">{{ result }}</span>
+            <span class="unit">Electric vehicles per month</span>
+        </h2>
+
+        <a href="/" class="back">
+            <span class="arrow">←</span> Predict Again
+        </a>
+
+    </div>
+
+</body>
+</html>

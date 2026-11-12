@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Sales Prediction</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #101c32, #172b45, #123b48);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            color: #ffffff;
+        }
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .orb1 {
+            width: 250px;
+            height: 250px;
+            background: #16c6b5;
+            top: -80px;
+            left: -70px;
+        }
+
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            background: #3185ce;
+            bottom: -120px;
+            right: -80px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 760px;
+            background: #ffffff;
+            color: #1d2d42;
+            padding: 38px 42px;
+            border-radius: 18px;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .heading h1 {
+            font-size: 27px;
+            color: #183b56;
+            margin-bottom: 9px;
+            font-weight: 700;
+        }
+
+        .heading p {
+            font-size: 14px;
+            color: #7b8997;
+        }
+
+        .heading-line {
+            width: 55px;
+            height: 4px;
+            background: linear-gradient(90deg, #16b8a8, #3185ce);
+            border-radius: 10px;
+            margin: 17px auto 0;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 21px 24px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #d5dfe8;
+            border-radius: 9px;
+            outline: none;
+            background: #f8fafc;
+            color: #24364b;
+            font-size: 15px;
+            transition: 0.25s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #16b8a8;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(22, 184, 168, 0.13);
+        }
+
+        input::placeholder {
+            color: #9aa8b6;
+        }
+
+        .field small {
+            color: #7b8997;
+            font-size: 11px;
+        }
+
+        .error-message {
+            grid-column: 1 / -1;
+            padding: 12px 15px;
+            border-radius: 8px;
+            background: #fff0ef;
+            border: 1px solid #f2c5c1;
+            color: #bd3d35;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .btn-wrap {
+            grid-column: 1 / -1;
+            margin-top: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: linear-gradient(100deg, #119f9a, #167fba);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.25s ease;
+            letter-spacing: 0.3px;
+        }
+
+        button:hover {
+            background: linear-gradient(100deg, #0d8985, #126b9e);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(17, 159, 154, 0.25);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            .card {
+                padding: 28px 20px;
+            }
+
+            form {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .heading h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+
+    <div class="card">
+
+        <div class="heading">
+            <h1>Electric Vehicle Sales Prediction</h1>
+            <p>Enter the vehicle details to estimate monthly sales</p>
+            <div class="heading-line"></div>
+        </div>
+
+        <form method="POST" action="/">
+
+            {% if error %}
+                <div class="error-message">
+                    ⚠ {{ error }}
+                </div>
+            {% endif %}
+
+            <div class="field">
+                <label>Battery Capacity (kWh)</label>
+                <input
+                    type="number"
+                    name="battery_capacity"
+                    placeholder="e.g. 62"
+                    min="40"
+                    max="96"
+                    step="any"
+                    value="{{ form_data.get('battery_capacity', '') }}"
+                    required>
+                <small>Allowed range: 40 – 96 kWh</small>
+            </div>
+
+            <div class="field">
+                <label>Range (km)</label>
+                <input
+                    type="number"
+                    name="range_km"
+                    placeholder="e.g. 361"
+                    min="250"
+                    max="520"
+                    step="any"
+                    value="{{ form_data.get('range_km', '') }}"
+                    required>
+                <small>Allowed range: 250 – 520 km</small>
+            </div>
+
+            <div class="field">
+                <label>Price (Lakhs)</label>
+                <input
+                    type="number"
+                    name="price_lakhs"
+                    placeholder="e.g. 30"
+                    min="18.6"
+                    max="50.4"
+                    step="any"
+                    value="{{ form_data.get('price_lakhs', '') }}"
+                    required>
+                <small>Allowed range: 18.6 – 50.4 lakhs</small>
+            </div>
+
+            <div class="field">
+                <label>Charging Time (Hours)</label>
+                <input
+                    type="number"
+                    name="charging_time"
+                    placeholder="e.g. 8"
+                    min="6.5"
+                    max="10.2"
+                    step="any"
+                    value="{{ form_data.get('charging_time', '') }}"
+                    required>
+                <small>Allowed range: 6.5 – 10.2 hours</small>
+            </div>
+
+            <div class="field">
+                <label>Brand Rating</label>
+                <input
+                    type="number"
+                    name="brand_rating"
+                    placeholder="e.g. 8.4"
+                    min="7.3"
+                    max="9.4"
+                    step="any"
+                    value="{{ form_data.get('brand_rating', '') }}"
+                    required>
+                <small>Allowed range: 7.3 – 9.4</small>
+            </div>
+
+            <div class="field">
+                <label>Incentives (kWh)</label>
+                <input
+                    type="number"
+                    name="incentives"
+                    placeholder="e.g. 5"
+                    min="3"
+                    max="8"
+                    step="any"
+                    value="{{ form_data.get('incentives', '') }}"
+                    required>
+                <small>Allowed range: 3 – 8</small>
+            </div>
+
+            <div class="field">
+                <label>Showroom Locations</label>
+                <input
+                    type="number"
+                    name="showroom_locations"
+                    placeholder="e.g. 13"
+                    min="6"
+                    max="23"
+                    step="1"
+                    value="{{ form_data.get('showroom_locations', '') }}"
+                    required>
+                <small>Allowed range: 6 – 23 locations</small>
+            </div>
+
+            <div class="btn-wrap">
+                <button type="submit">Predict Monthly Sales →</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+</html>
